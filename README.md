@@ -1,1 +1,17 @@
-# nueral_network_deep_learning
+# Metr Interstate Traffic Volume 
+This project aimed to predict from a 7-hour input window only the traffic volume for 3 hours past the end of the window, developing the best model with the lowest RMSE
+
+Different Models: 
+#### 1) The Need for Bidirectional Model: (Bi-LSTM):
+A typical state in an RNN (simple RNN, GRU, or LSTM) relies on the past and the present events. A state at time tt depends on the states x1,x2,…,xt−1x1,x2,…,xt−1, and xtxt. This is the idealist case, but sometimes our values depend on the past present, and future. In our traffic case suppose, we got to know from our data that holidays like new years and thanks giving impacts the traffic volume, but last even due to covid lockdown there was lesser traffic volume (assumed from stats), this way a future event like covid lockdown has impacted the traffic volume hence, that there are upcoming holidays. For my network, I used a simple layer of Bidirectional with LDTM used from the base model with a recurrent dropout as 0.2
+
+#### 2) CNN-LMST Model: (CRNN):
+As in CNN, the feed-forward neuron is only connected from its connections input to output and on the other hand in RNN neuron also has a connection from input to output but has an advantage of the output to have a connection with input, I wanted to try this combination. Also, read some research papers that talked about the significance of these types of networks. I added two Bidirectional LSTM layers with 64 and 32 filters and a dropout of 0.4 and 0.2 respectively however the model become underfitting as the RMSE value of testing became higher than from validation data. I also made it learn on 100 epochs, as I thought that complex models need more epochs for training. On the second attempt, I reduced the stacked Bidirectional layers to one with a filter size same as Con1D adding an additional dropout layer of 0.25 after COVD1D and changing the recurrent dropout to 0.3, the resulted in a much faster computational time, with a starting RMSE on validation as 0.4. However, due to early stopping, it was not increasing at it stopped at the RMSE of 0.2782 on testing. 
+
+#### 3) Bidirectional + Multi Dense Layer: (Bi-DENSE)
+My best model so far is the Bidirectional + Multi-Dense Layer, and bidirectional layer with LSTM of 64 filters, and a dropout of 0.4. Additionally, I tired 0.3 as a recurrent dropout as well but I got an RMSE of validation of 0.155. After which I changed it to 0.4 from which I got a loss of 0.06 and a validation error of 0.1804, I tried multi dense layer networks without flattening layer, but they were not that significant in terms of the error, the key in this network is also the flatten layer which helps in keeping control of the shape that same as the one in use by the network. I also tried to add an additional normal dropout layer but it made the error high, at the end I figured out that recurrent dropout of 0.3 is ideal for this model as below it also increased the RMSE error on training and a higher recurrent dropout from 0.3 also increased the RMSE error.
+
+#### 4) CONV1D - GRU - (CGRU)
+For this model, I combined GRU and CNN, the training time with GRU was much faster as compared to LSTM, in addition to that, GRU just has two gates the reset and update gate, while LSTM has three gates input, output, and forget gate. My model consisted of one layer of CONVD1d, with a filter size of 32, kernel size was kept the same as our total window size as 10, with a max-pooling of 1.
+
+
