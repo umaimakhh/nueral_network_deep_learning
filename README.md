@@ -1,4 +1,4 @@
-# Metr Interstate Traffic Volume 
+# Metro Interstate Traffic Volume 
 This project aimed to predict from a 7-hour input window only the traffic volume for 3 hours past the end of the window, developing the best model with the lowest RMSE
 
 Different Models: 
